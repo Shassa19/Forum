@@ -24,3 +24,18 @@ CREATE TABLE comments (
     FOREIGN KEY(post_id) REFERENCES posts(id),
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
+
+INSERT INTO users (username, email) VALUES ('Alice', 'alice@example.com');
+INSERT INTO users (username, email) VALUES ('Bob', 'bob@example.com');
+
+INSERT INTO posts (title, content, user_id) VALUES ('Bienvenue sur le forum', 'Test premier message.', 1);
+INSERT INTO posts (title, content, user_id) VALUES ('Deuxième post', 'Salut tout le monde!', 2);
+
+INSERT INTO comments (post_id, user_id, content) VALUES (1, 2, 'Super, merci Alice !');
+INSERT INTO comments (post_id, user_id, content) VALUES (2, 1, 'Bienvenue Bob !');
+
+INSERT INTO likes (post_id, user_id, type) VALUES (1, 2, 'like');
+INSERT INTO likes (post_id, user_id, type) VALUES (2, 1, 'like');
+
+SELECT posts.title, users.username FROM posts
+JOIN users ON posts.user_id = users.id;
