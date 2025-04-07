@@ -4,6 +4,8 @@ CREATE TABLE users (
     username TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL
+    ALTER TABLE users ADD COLUMN session_token TEXT;
+    ALTER TABLE users ADD COLUMN csrf_token TEXT;
 );
 /*Table s'occupant des posts des utilisateurs*/
 CREATE TABLE posts (
@@ -24,3 +26,21 @@ CREATE TABLE comments (
     FOREIGN KEY(post_id) REFERENCES posts(id),
     FOREIGN KEY(user_id) REFERENCES users(id)
 );
+
+CREATE TABLE likes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    post_id INTEGER,
+    value INTEGER CHECK(value IN (1, -1)),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id, post_id), -- pour empêcher les doublons
+    FOREIGN KEY(user_id) REFERENCES users(id),
+    FOREIGN KEY(post_id) REFERENCES posts(id)
+);
+
+CREATE TABLE categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE
+);
+
+ALTER TABLE posts ADD COLUMN category_id INTEGER;
