@@ -1,9 +1,92 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Forum</title>
-        <link rel="stylesheet" href="">
-    </head>
+<head>
+  <meta charset="UTF-8">
+  <title>Forum</title>
+  <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+
+  <!-- Header principal -->
+  <header>
+    <div class="top-bar">
+      <button>S'enregistrer</button>
+      <button>Connexion</button>
+    </div>
+    <h1>Forum</h1>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="main-nav">
+    <button>➕ Créer un sujet</button>
+    <button>❤️ Sujet liké</button>
+    <button>⭐ Les plus populaires</button>
+  </nav>
+
+  <!-- Barre de recherche + contenu -->
+  <main>
+    <div class="forum-container">
+      
+      <!-- Sidebar filtres -->
+      <aside class="filters">
+        <h2>Filtres</h2>
+        <button>☰</button>
+        <ul>
+          <li><input type="checkbox"> </li>
+          <li><input type="checkbox"> </li>
+          <li><input type="checkbox"> </li>
+          <li><input type="checkbox"> </li>
+          <li><input type="checkbox"> </li>
+        </ul>
+      </aside>
+
+      <!-- Zone centrale -->
+      <section class="forum-content">
+        <div class="search-bar">
+          <input type="text" placeholder="Rechercher...">
+        </div>
+
+        <!-- Liste des sujets -->
+        <div class="subject-list">
+          <div class="subject-card">
+            <h3>Sujet</h3>
+            <p>Top com/description...</p>
+            <span>Créateur</span>
+          </div>
+          <div class="subject-card">
+            <h3>Sujet</h3>
+            <p>Top com/description...</p>
+            <span>Créateur</span>
+          </div>
+          <div class="subject-card">
+            <h3>Sujet</h3>
+            <p>Top com/description...</p>
+            <span>Créateur</span>
+          </div>
+          <div class="subject-card">
+            <h3>Sujet</h3>
+            <p>Top com/description...</p>
+            <span>Créateur</span>
+          </div>
+          <div class="subject-card">
+            <h3>Sujet</h3>
+            <p>Top com/description...</p>
+            <span>Créateur</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <h2>Description de notre forum</h2>
+    <div class="footer-columns">
+      <div>Blabla</div>
+      <div>Blabla</div>
+      <div>Blabla</div>
+    </div>
+  </footer>
+
+</body>
 </html>

@@ -1,3 +1,5 @@
-module forum
+module Forum
 
-go 1.20
+go 1.23.1
+
+require golang.org/x/crypto v0.36.0
