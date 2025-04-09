@@ -25,7 +25,7 @@
   /* HEADER */
   header {
     background-color: var(--primary-color);
-    padding: 1rem;
+    padding: 3rem;
     text-align: center;
     position: relative;
   }
@@ -109,7 +109,7 @@
   }
   
   .filters li {
-    margin: 5px 0;
+    margin: 30px 0;
   }
   
   /* ZONE CENTRALE */
@@ -154,7 +154,7 @@
   /* FOOTER */
   footer {
     border-top: 1px solid var(--border-color);
-    padding: 2rem 1rem;
+    padding: 5rem 1rem;
     background-color: #f7f7f7;
     text-align: center;
   }
@@ -169,4 +169,81 @@
     justify-content: space-around;
     font-size: 0.9rem;
   }
+  
+  /* Popup Post */
+  #popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .popup-box {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 500px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  }
+  
+  .popup-header {
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  
+  .popup-box input,
+  .popup-box textarea {
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #aaa;
+    font-size: 1rem;
+  }
+  
+  .popup-box textarea {
+    height: 150px;
+    resize: vertical;
+  }
+  
+  .popup-actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .popup-actions button {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  #cancelBtn {
+    background-color: #e0e0e0;
+  }
+
+  #cancelBtn:hover {
+    background-color: #d2d2d2;
+  }  
+  
+  .publish {
+    background-color: #b4b4f8;
+    color: white;
+  }
+
+  .publish:hover {
+    background-color: #a1a1f5;
+  }
+  
+  .hidden {
+    display: none !important;
+  }
+  
   

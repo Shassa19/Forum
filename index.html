@@ -18,7 +18,7 @@
 
   <!-- Navigation -->
   <nav class="main-nav">
-    <button>➕ Créer un sujet</button>
+    <button onclick="openPostPopup()">➕ Créer un sujet</button>
     <button>❤️ Sujet liké</button>
     <button>⭐ Les plus populaires</button>
   </nav>
@@ -88,5 +88,20 @@
     </div>
   </footer>
 
+  <div id="popup-overlay" class="hidden">
+    <div class="popup-box">
+      <p class="popup-header">Exprime-toi <span id="popup-user">Pseudo</span> tout le monde t'écoute...</p>
+      <form id="postForm">
+        <input type="text" name="title" placeholder="Titre..." required>
+        <textarea name="content" placeholder="Quoi de neuf ?" required></textarea>
+        <div class="popup-actions">
+          <button type="button" id="cancelBtn">Annuler</button>
+          <button type="submit" class="publish">Publier</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="static/postPopup.js"></script>
 </body>
 </html>

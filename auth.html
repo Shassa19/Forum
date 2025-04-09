@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion - Forum</title>
+  <link rel="stylesheet" href="static/auth.css">
+</head>
+<body>
+
+  <div class="box">
+
+    <!-- Bloc de choix -->
+    <div id="choix">
+      <h2>FORUM</h2>
+      <button onclick="showForm('login')">Connexion</button>
+      <button onclick="showForm('register')">Inscription</button>
+      <div class="small-link">Besoin d’aide ?</div>
+    </div>
+
+    <!-- Connexion -->
+    <form id="login" class="hidden" action="/login" method="POST">
+      <h2>Connexion</h2>
+      <input type="text" name="username" placeholder="Pseudo..." required>
+      <input type="password" name="password" placeholder="Mot de passe..." required>
+      <div class="checkbox">
+        <label><input type="checkbox"> Rester connecté</label>
+      </div>
+      <button type="submit">Se connecter</button>
+      <div class="small-link" onclick="back()">Retour</div>
+    </form>
+
+    <!-- Inscription -->
+    <form id="register" class="hidden" action="/register" method="POST">
+      <h2>Inscription</h2>
+      <input type="text" name="username" placeholder="Pseudo..." required>
+      <input type="email" name="email" placeholder="Mail..." required>
+      <input type="password" name="password" placeholder="Mot de passe..." required>
+      <button type="submit">S'inscrire</button>
+      <div class="small-link" onclick="back()">Retour</div>
+    </form>
+
+  </div>
+
+  <script src="static/auth.js"></script>
+</body>
+</html>
