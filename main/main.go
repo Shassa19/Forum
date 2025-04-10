@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
@@ -96,6 +97,10 @@ func login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Println("→ Tokens stockés en BDD pour", username)
+	fmt.Println("session_token =", sessionToken)
+	fmt.Println("csrf_token =", csrfToken)
+
 	// On installe un cookie pour la session à chaque fois qu'une requete est faite
 	http.SetCookie(w, &http.Cookie{
 		Name:     "session_token",
@@ -111,6 +116,12 @@ func login(w http.ResponseWriter, r *http.Request) {
 		Expires:  time.Now().Add(24 * time.Hour),
 		HttpOnly: false, //false car besoin d'accès coté client pour le rendre accessible au reste
 	})
+
+	users[username] = Login{
+		HashedPassword: hashedPassword,
+		SessionToken:   sessionToken,
+		CSRFToken:      csrfToken,
+	}
 
 	http.Redirect(w, r, "/index", http.StatusSeeOther)
 }
@@ -213,6 +224,41 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Post créé avec succès !")
 }
 
+type Post struct {
+	ID       int    `json:"id"`
+	Username string `json:"username"`
+	Title    string `json:"title"`
+	Content  string `json:"content"`
+	Date     string `json:"created_at"`
+}
+
+func getPosts(w http.ResponseWriter, r *http.Request) {
+	rows, err := db.Query(`
+		SELECT posts.id, users.username, posts.title, posts.content, posts.created_at
+		FROM posts
+		JOIN users ON posts.user_id = users.id
+		ORDER BY posts.created_at DESC
+	`)
+	if err != nil {
+		http.Error(w, "Erreur lors de la récupération des posts", http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var posts []Post
+	for rows.Next() {
+		var p Post
+		if err := rows.Scan(&p.ID, &p.Username, &p.Title, &p.Content, &p.Date); err != nil {
+			http.Error(w, "Erreur lors du scan", http.StatusInternalServerError)
+			return
+		}
+		posts = append(posts, p)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(posts)
+}
+
 func getCurrentUser(w http.ResponseWriter, r *http.Request) {
 	sessionCookie, err := r.Cookie("session_token")
 	if err != nil || sessionCookie.Value == "" {
@@ -241,6 +287,7 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("../static"))))
 	http.HandleFunc("/createPost", createPost)
 	http.HandleFunc("/me", getCurrentUser)
+	http.HandleFunc("/posts", getPosts)
 
 	http.HandleFunc("/auth", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "../auth.html")
