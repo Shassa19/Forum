@@ -28,17 +28,19 @@
     <div class="forum-container">
       
       <!-- Sidebar filtres -->
-      <aside class="filters">
-        <h2>Filtres</h2>
-        <button>☰</button>
-        <ul>
-          <li><input type="checkbox"> </li>
-          <li><input type="checkbox"> </li>
-          <li><input type="checkbox"> </li>
-          <li><input type="checkbox"> </li>
-          <li><input type="checkbox"> </li>
-        </ul>
-      </aside>
+      <aside id="filters" class="filters closed">
+        <div class="arrow-box">
+          <button id="toggleFilters">☰</button>
+        </div>
+        <div class="filter-content">
+          <h2>Filtres</h2>
+          <ul>
+            <li><input type="checkbox"></li>
+            <li><input type="checkbox"></li>
+            <li><input type="checkbox"></li>
+          </ul>
+        </div>
+      </aside>      
 
       <!-- Zone centrale -->
       <section class="forum-content">
@@ -103,5 +105,6 @@
   </div>
 
   <script src="static/postPopup.js"></script>
+  <script src="static/filterToggle.js"></script>
 </body>
 </html>
