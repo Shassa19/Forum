@@ -2,65 +2,66 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Forum</title>
+  <title>Post - Forum</title>
+  <link rel="stylesheet" href="static/style.css">
   <link rel="stylesheet" href="static/post.css">
 </head>
 <body>
+  <div id="message" class="hidden"></div>
+
+  <!-- Header principal -->
   <header>
-    <h1>Forum</h1>
-    <div class="profile">
-      <div class="profile-circle"></div>
-      <span>Pseudo</span>
+    <div class="top-bar">
+      <button onclick="window.location.href='/index'">⬅ Retour</button>
+      <button id="btn-profile" class="hidden">Mon profil</button>
+      <button id="btn-logout" class="hidden">Déconnexion</button>
     </div>
+    <h1>Forum</h1>
   </header>
 
-  <nav>
-    <div>Créer un sujet</div>
-    <div>Sujet liké</div>
-    <div>Les plus populaires</div>
+  <!-- Navigation -->
+  <nav class="main-nav">
+    <button onclick="openPostPopup()">➕ Créer un sujet</button>
+    <button>❤️ Sujet liké</button>
+    <button>⭐ Les plus populaires</button>
   </nav>
 
-  <div class="container">
-    <div class="back-arrow">&larr;</div>
-    <div class="post">
-      <div class="post-header">
-        <div class="avatar"></div>
-        <strong>Pseudo</strong>
+  <!-- Contenu principal du post -->
+  <main class="post-container">
+    <section class="post-box">
+      <h2 id="post-title">Titre du post</h2>
+      <p id="post-content">Contenu complet du post...</p>
+      <div class="post-meta">
+        <span id="post-author">Auteur</span> |
+        <span id="post-date">Date</span>
       </div>
-      <div class="post-content">
-        <h3>Sujet</h3>
-        <p>Top com/description...</p>
+      <div class="like-section">
+        <button id="like-btn">👍</button>
+        <button id="dislike-btn">👎</button>
+        <span id="like-count">0</span>
       </div>
-      <div class="post-footer">
-        heure - 09/04/2025 - nb de like
-      </div>
-      <div class="comments">
-        <div class="comment">
-          <div class="avatar"></div>
-          <div>
-            <strong>Pseudo</strong>
-            <p>Bliblublou takepounka</p>
-          </div>
-        </div>
-        <div class="comment">
-          <div class="avatar"></div>
-          <strong>Pseudo</strong>
-        </div>
-      </div>
-      <div class="reply-box">
-        <input type="text" placeholder="Postez votre réponse">
-      </div>
-    </div>
-  </div>
+    </section>
 
+    <section class="comment-section">
+      <h3>Commentaires</h3>
+      <div id="comments"></div>
+      <form id="commentForm">
+        <textarea name="comment" placeholder="Votre commentaire..." required></textarea>
+        <button type="submit">Envoyer</button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Footer -->
   <footer>
-    <h3>Description de notre forum</h3>
-    <div>
+    <h2>Description de notre forum</h2>
+    <div class="footer-columns">
       <div>Blabla</div>
       <div>Blabla</div>
       <div>Blabla</div>
     </div>
   </footer>
+
+  <script src="static/postDetails.js"></script>
 </body>
 </html>

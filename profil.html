@@ -2,8 +2,9 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Forum</title>
+  <title>Profil - Forum</title>
   <link rel="stylesheet" href="static/style.css">
+  <link rel="stylesheet" href="static/profil.css">
 </head>
 <body>
   <div id="message" class="hidden"></div>
@@ -11,8 +12,7 @@
   <!-- Header principal -->
   <header>
     <div class="top-bar">
-      <button id="btn-auth" onclick="window.location.href='/auth'">S'authentifier</button>
-      <button id="btn-profile" class="hidden">Mon profil</button>
+      <button onclick="window.location.href='/index'">⬅ Retour</button>
       <button id="btn-logout" class="hidden">Déconnexion</button>
     </div>    
     <h1>Forum</h1>
@@ -25,37 +25,25 @@
     <button>⭐ Les plus populaires</button>
   </nav>
 
-  <!-- Barre de recherche + contenu -->
-  <main>
-    <div class="forum-container">
-      
-      <!-- Sidebar filtres -->
-      <aside id="filters" class="filters closed">
-        <div class="arrow-box">
-          <button id="toggleFilters">☰</button>
-        </div>
-        <div class="filter-content">
-          <h2>Filtres</h2>
-          <ul>
-            <li><input type="checkbox"></li>
-            <li><input type="checkbox"></li>
-            <li><input type="checkbox"></li>
-          </ul>
-        </div>
-      </aside>      
+  <!-- Contenu principal du profil -->
+  <main class="profile-layout">
+    <aside class="profile-sidebar">
+      <div class="avatar-circle"></div>
+      <h2 id="profile-username">Pseudo</h2>
+      <p>Modification de profil</p>
+      <button onclick="logout()">Se déconnecter</button>
+    </aside>
 
-      <!-- Zone centrale -->
-      <section class="forum-content">
-        <div class="search-bar">
-          <input type="text" placeholder="Rechercher...">
-        </div>
-
-       <!-- Liste des sujets (chargés dynamiquement) -->
-<div class="subject-list">
-  <!-- Les posts seront injectés ici via JS -->
-</div>
-      </section>
-    </div>
+    <section class="profile-content">
+      <div class="user-posts">
+        <h3>Mes topics</h3>
+        <div id="userPosts"></div>
+      </div>
+      <div class="user-last-reply">
+        <h3>Dernière réponse</h3>
+        <div id="lastReply"></div>
+      </div>
+    </section>
   </main>
 
   <!-- Footer -->
@@ -68,6 +56,7 @@
     </div>
   </footer>
 
+  <!-- Popup création post (réutilisation) -->
   <div id="popup-overlay" class="hidden">
     <div class="popup-box">
       <p class="popup-header">Exprime-toi <span id="popup-user">Pseudo</span> tout le monde t'écoute...</p>
@@ -82,8 +71,7 @@
     </div>
   </div>
 
-  <script src="static/postLoader.js"></script>
   <script src="static/postPopup.js"></script>
-  <script src="static/filterToggle.js"></script>
+  <script src="static/profile.js"></script>
 </body>
 </html>

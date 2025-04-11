@@ -58,7 +58,8 @@ func register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintln(w, "Inscription d'utilisateur réussie !")
+	fmt.Println("Inscription réussie pour", username)
+	http.Redirect(w, r, "/index?success=1", http.StatusSeeOther)
 }
 
 // Fonction de connexion avec la méthode POST en prenant l'username et le mot de passe
@@ -232,6 +233,7 @@ type Post struct {
 	Date     string `json:"created_at"`
 }
 
+// Fonction pour récupérer tous les posts sur  la page index
 func getPosts(w http.ResponseWriter, r *http.Request) {
 	rows, err := db.Query(`
 		SELECT posts.id, users.username, posts.title, posts.content, posts.created_at
@@ -257,6 +259,31 @@ func getPosts(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(posts)
+}
+
+// Fonction pour récupérer un post spécifique
+func getPost(w http.ResponseWriter, r *http.Request) {
+	id := r.URL.Query().Get("id")
+	if id == "" {
+		http.Error(w, "ID du post manquant", http.StatusBadRequest)
+		return
+	}
+
+	var p Post
+	err := db.QueryRow(`
+		SELECT posts.id, users.username, posts.title, posts.content, posts.created_at
+		FROM posts
+		JOIN users ON posts.user_id = users.id
+		WHERE posts.id = ?
+	`, id).Scan(&p.ID, &p.Username, &p.Title, &p.Content, &p.Date)
+
+	if err != nil {
+		http.Error(w, "Post introuvable", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(p)
 }
 
 func getCurrentUser(w http.ResponseWriter, r *http.Request) {
@@ -288,6 +315,7 @@ func main() {
 	http.HandleFunc("/createPost", createPost)
 	http.HandleFunc("/me", getCurrentUser)
 	http.HandleFunc("/posts", getPosts)
+	http.HandleFunc("/getPost", getPost)
 
 	http.HandleFunc("/auth", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "../auth.html")
@@ -295,6 +323,10 @@ func main() {
 
 	http.HandleFunc("/index", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "../index.html")
+	})
+
+	http.HandleFunc("/profil", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "../profil.html")
 	})
 
 	http.ListenAndServe(":8080", nil)
