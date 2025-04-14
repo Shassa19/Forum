@@ -90,6 +90,19 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("/me")
+    .then(res => res.ok ? res.text() : null)
+    .then(username => {
+      if (username) {
+        currentUser = username;
+        document.getElementById("btn-profile")?.classList.remove("hidden");
+      } else {
+        document.getElementById("btn-profile")?.classList.add("hidden");
+      }
+    });
+});
+
 document.getElementById("btn-profile").onclick = () => {
   window.location.href = "../profil";
 };
