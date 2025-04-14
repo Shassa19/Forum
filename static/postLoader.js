@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <span>${post.username} — ${new Date(post.date).toLocaleDateString()}</span>
         </a>
       `;
+
         postContainer.appendChild(card);
       });
     })

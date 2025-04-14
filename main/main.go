@@ -329,5 +329,9 @@ func main() {
 		http.ServeFile(w, r, "../profil.html")
 	})
 
+	http.HandleFunc("/post", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "../post.html")
+	})
+
 	http.ListenAndServe(":8080", nil)
 }
