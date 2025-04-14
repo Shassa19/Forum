@@ -303,6 +303,55 @@ func getCurrentUser(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(username))
 }
 
+func getUserPosts(w http.ResponseWriter, r *http.Request) {
+	// Récupération du token de session via le cookie
+	sessionCookie, err := r.Cookie("session_token")
+	if err != nil || sessionCookie.Value == "" {
+		http.Error(w, "Non connecté", http.StatusUnauthorized)
+		return
+	}
+
+	// Récupération du username associé au token
+	var username string
+	err = db.QueryRow("SELECT username FROM users WHERE session_token = ?", sessionCookie.Value).Scan(&username)
+	if err != nil {
+		http.Error(w, "Utilisateur non trouvé", http.StatusUnauthorized)
+		return
+	}
+
+	// Requête des posts de l'utilisateur
+	rows, err := db.Query(`
+		SELECT posts.id, posts.title
+		FROM posts
+		JOIN users ON posts.user_id = users.id
+		WHERE users.username = ?
+		ORDER BY posts.created_at DESC
+	`, username)
+	if err != nil {
+		http.Error(w, "Erreur lors de la récupération des posts", http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	type PostData struct {
+		ID    int    `json:"id"`
+		Title string `json:"title"`
+	}
+
+	var posts []PostData
+	for rows.Next() {
+		var p PostData
+		if err := rows.Scan(&p.ID, &p.Title); err != nil {
+			http.Error(w, "Erreur lors du scan", http.StatusInternalServerError)
+			return
+		}
+		posts = append(posts, p)
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(posts)
+}
+
 func main() {
 	InitDB("../forum.db") // Connexion SQLite
 
@@ -311,11 +360,13 @@ func main() {
 	http.HandleFunc("/logout", logout)
 	http.HandleFunc("/protected", protected)
 
+	http.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("../assets"))))
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("../static"))))
 	http.HandleFunc("/createPost", createPost)
 	http.HandleFunc("/me", getCurrentUser)
 	http.HandleFunc("/posts", getPosts)
 	http.HandleFunc("/getPost", getPost)
+	http.HandleFunc("/userPosts", getUserPosts)
 
 	http.HandleFunc("/auth", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "../auth.html")

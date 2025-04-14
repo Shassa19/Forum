@@ -1,7 +1,14 @@
+/* Affiche un message éphémère après une connexion réussie */
+/* Récupère l'utilisateur connecté et affiche les bons boutons */
+/* Charge dynamiquement les posts depuis la base */
+/* Génère les cartes HTML des posts (avec lien vers page post.html) */
+/* Gère la déconnexion sécurisée via POST et CSRF */
+/* Redirige l’utilisateur vers la page /profil */
+
 let currentUser = "";
 
 document.addEventListener("DOMContentLoaded", () => {
-  // 🔄 Affiche le message de succès après redirection
+  //message de succès après redirection
   const params = new URLSearchParams(window.location.search);
   if (params.get("success") === "1") {
     const msg = document.getElementById("message");
@@ -10,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => msg.classList.add("hidden"), 3000);
   }
 
-  // 🔄 Détection utilisateur connecté
+  //détection connecté
   fetch("/me")
     .then(res => res.ok ? res.text() : null)
     .then(username => {
@@ -22,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-  // 📥 Chargement des posts
+  //chargement des posts
   const postContainer = document.querySelector(".subject-list");
 
   fetch("/posts")
@@ -53,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
       postContainer.innerHTML = "<p>Erreur de chargement des posts.</p>";
     });
 
-  // 🚪 Déconnexion
+  //déconnexion
   document.getElementById("btn-logout").onclick = async () => {
     const formData = new FormData();
     formData.append("username", currentUser);

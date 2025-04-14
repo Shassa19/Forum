@@ -4,63 +4,85 @@
   <meta charset="UTF-8">
   <title>Post - Forum</title>
   <link rel="stylesheet" href="static/post.css">
+  <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
-  <div id="message" class="hidden"></div>
-
   <!-- Header principal -->
   <header>
     <div class="top-bar">
-      <button onclick="window.location.href='/index'">⬅ Retour</button>
-      <button id="btn-profile" class="hidden">Mon profil</button>
-      <button id="btn-logout" class="hidden">Déconnexion</button>
+      <button onclick="window.location.href='/index'">Retour</button>
+      <button id="btn-profile">Mon profil</button>
     </div>
     <h1>Forum</h1>
   </header>
 
   <!-- Navigation -->
   <nav class="main-nav">
-    <button onclick="openPostPopup()">➕ Créer un sujet</button>
     <button>❤️ Sujet liké</button>
+    <button onclick="openPostPopup()">➕ Créer un sujet</button>
     <button>⭐ Les plus populaires</button>
   </nav>
 
-  <!-- Contenu principal du post -->
+  <!-- Contenu du post -->
   <main class="post-container">
-    <section class="post-box">
-      <h2 id="post-title">Titre du post</h2>
-      <p id="post-content">Contenu complet du post...</p>
-      <div class="post-meta">
-        <span id="post-author">Auteur</span> |
-        <span id="post-date">Date</span>
+    <div class="post-card">
+      <div class="post-header">
+        <div class="avatar"></div>
+        <div class="username">Pseudo</div>
       </div>
-      <div class="like-section">
-        <button id="like-btn">👍</button>
-        <button id="dislike-btn">👎</button>
-        <span id="like-count">0</span>
-      </div>
-    </section>
+      <div class="post-title">Sujet</div>
+      <div class="post-content">Top com/description...</div>
+      <div class="post-meta">heure - 09/04/2025 - nb de like</div>
 
-    <section class="comment-section">
-      <h3>Commentaires</h3>
-      <div id="comments"></div>
-      <form id="commentForm">
-        <textarea name="comment" placeholder="Votre commentaire..." required></textarea>
-        <button type="submit">Envoyer</button>
+      <!-- Commentaires -->
+      <div class="comments-section">
+        <div class="comment">
+          <div class="comment-avatar"></div>
+          <div class="comment-body">
+            <div class="comment-username">Pseudo</div>
+            <div class="comment-text">Bilbloublou takapounka</div>
+          </div>
+        </div>
+        <div class="comment">
+          <div class="comment-avatar"></div>
+          <div class="comment-body">
+            <div class="comment-username">Pseudo</div>
+            <div class="comment-text">...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulaire commentaire -->
+      <form class="comment-form">
+        <textarea placeholder="Postez votre réponse"></textarea>
+        <button type="submit">Publier</button>
       </form>
-    </section>
+    </div>
   </main>
 
   <!-- Footer -->
   <footer>
-    <h2>Description de notre forum</h2>
+    <h2>Notre communauté</h2>
     <div class="footer-columns">
-      <div>Blabla</div>
-      <div>Blabla</div>
-      <div>Blabla</div>
+      <div>
+        <h4>À propos</h4>
+        <p>Forum créé grâce à Louis</p>
+        <p>Partage, entraide et discussion libre.</p>
+      </div>
+      <div>
+        <h4>Projet pédagogique</h4>
+        <p>Développé dans le cadre d’un projet web.</p>
+        <p>Romain à fais les filtres</p>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>contact@forumlocal.fr</p>
+        <p>&copy; 2025 ForumLocal - Tous droits réservés</p>
+      </div>
     </div>
-  </footer>
+  </footer> 
 
-  <script src="static/postDetails.js"></script>
+  <script src="assets/postDetails.js"></script>
+
 </body>
 </html>

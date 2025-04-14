@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Profil - Forum</title>
-  <link rel="stylesheet" href="static/style.css">
   <link rel="stylesheet" href="static/profil.css">
 </head>
 <body>
@@ -12,66 +11,67 @@
   <!-- Header principal -->
   <header>
     <div class="top-bar">
-      <button onclick="window.location.href='/index'">⬅ Retour</button>
-      <button id="btn-logout" class="hidden">Déconnexion</button>
-    </div>    
+      <button onclick="window.location.href='/index'">← Retour</button>
+    </div>
     <h1>Forum</h1>
   </header>
 
   <!-- Navigation -->
   <nav class="main-nav">
-    <button onclick="openPostPopup()">➕ Créer un sujet</button>
     <button>❤️ Sujet liké</button>
+    <button onclick="openPostPopup()">➕ Créer un sujet</button>
     <button>⭐ Les plus populaires</button>
   </nav>
 
-  <!-- Contenu principal du profil -->
-  <main class="profile-layout">
-    <aside class="profile-sidebar">
-      <div class="avatar-circle"></div>
+  <!-- Contenu principal -->
+  <main class="profile-container">
+    <!-- Sidebar gauche -->
+    <aside class="sidebar">
+      <div class="avatar"></div>
       <h2 id="profile-username">Pseudo</h2>
       <p>Modification de profil</p>
       <button onclick="logout()">Se déconnecter</button>
     </aside>
 
-    <section class="profile-content">
-      <div class="user-posts">
+    <!-- Zone centrale -->
+    <section class="profile-main">
+      <div class="topics-list">
         <h3>Mes topics</h3>
-        <div id="userPosts"></div>
+        <div class="topic-card">Sujet 1</div>
+        <div class="topic-card">Sujet 2</div>
+        <div class="topic-card">Sujet 3</div>
       </div>
-      <div class="user-last-reply">
+
+      <div class="last-reply">
         <h3>Dernière réponse</h3>
-        <div id="lastReply"></div>
+        <p>Contenu de la dernière réponse ici...</p>
       </div>
     </section>
   </main>
 
   <!-- Footer -->
   <footer>
-    <h2>Description de notre forum</h2>
+    <h2>Notre communauté</h2>
     <div class="footer-columns">
-      <div>Blabla</div>
-      <div>Blabla</div>
-      <div>Blabla</div>
+      <div>
+        <h4>À propos</h4>
+        <p>Forum créé grâce à Louis</p>
+        <p>Partage, entraide et discussion libre.</p>
+      </div>
+      <div>
+        <h4>Projet pédagogique</h4>
+        <p>Développé dans le cadre d’un projet web.</p>
+        <p>Romain à fais les filtres</p>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>contact@forumlocal.fr</p>
+        <p>&copy; 2025 ForumLocal - Tous droits réservés</p>
+      </div>
     </div>
-  </footer>
+  </footer> 
 
-  <!-- Popup création post (réutilisation) -->
-  <div id="popup-overlay" class="hidden">
-    <div class="popup-box">
-      <p class="popup-header">Exprime-toi <span id="popup-user">Pseudo</span> tout le monde t'écoute...</p>
-      <form id="postForm">
-        <input type="text" name="title" placeholder="Titre..." required>
-        <textarea name="content" placeholder="Quoi de neuf ?" required></textarea>
-        <div class="popup-actions">
-          <button type="button" id="cancelBtn">Annuler</button>
-          <button type="submit" class="publish">Publier</button>
-        </div>
-      </form>
-    </div>
-  </div>
+  <script src="assets/profile.js"></script>
 
-  <script src="static/postPopup.js"></script>
-  <script src="static/profile.js"></script>
 </body>
 </html>

@@ -1,3 +1,8 @@
+/* Récupère le pseudo de l'utilisateur connecté + le csrf_token (depuis les cookies) */
+/* Ouvre la popup de création de post quand on clique sur "Créer un sujet" */
+/* Ferme la popup si l'utilisateur clique sur "Annuler" */
+/* Gère l’envoi sécurisé du post avec fetch en POST et token CSRF dans les headers */
+
 document.addEventListener("DOMContentLoaded", () => {
   const popup = document.getElementById("popup-overlay");
   const postForm = document.getElementById("postForm");
@@ -7,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentUser = "";
   let csrfToken = "";
 
-  // 🔄 Récupération pseudo connecté + csrf token
+  //récup pseudo utilisateur connecté
   fetch("/me")
     .then(res => res.ok ? res.text() : Promise.reject("Non connecté"))
     .then(username => {
@@ -27,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch(err => console.error("Erreur récupération pseudo :", err));
 
-  // 🔘 Ouvre la popup au clic sur "Créer un sujet"
+  //ouvre la popup au clic
   window.openPostPopup = () => {
     console.log("openPostPopup appelée");
     if (!currentUser) {
@@ -39,13 +44,13 @@ document.addEventListener("DOMContentLoaded", () => {
     popup.classList.remove("hidden");
   };
 
-  // ❌ Ferme la popup
+  //ferme la popup
   cancelBtn.onclick = () => {
     console.log("Annuler cliqué");
     popup.classList.add("hidden");
   };
 
-  // 📤 Envoi du formulaire
+  //envoi du formulaire
   postForm.onsubmit = async (e) => {
     e.preventDefault();
 
