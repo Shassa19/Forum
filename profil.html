@@ -23,24 +23,38 @@
     <button>⭐ Les plus populaires</button>
   </nav>
 
-  <!-- Contenu principal -->
-  <main class="profile-container">
-    <!-- Sidebar gauche -->
-    <aside class="sidebar">
-      <div class="avatar"></div>
-      <h2 id="profile-username">Pseudo</h2>
-      <p>Modification de profil</p>
-      <button onclick="logout()">Se déconnecter</button>
-    </aside>
+    <!-- Contenu principal -->
+<main class="profile-container">
+  <!-- Sidebar gauche -->
+  <aside class="sidebar">
+    <div class="avatar-wrapper">
+      <img id="profile-avatar" src="static/avatars/avatar1.png" alt="Avatar utilisateur">
+    </div>
+    <button onclick="openAvatarPopup()">Changer d'avatar</button>
+    <h2 id="profile-username">Pseudo</h2>
+    <p class="edit-profile">Modification de profil</p>
+    <button onclick="logout()">Se déconnecter</button>
+
+    <!-- Popup de sélection d'avatar -->
+    <div id="avatar-popup" class="hidden">
+      <h3>Choisis ton avatar</h3>
+      <div class="avatar-options">
+        <img src="static/avatars/avatar1.png" onclick="selectAvatar('avatar1.png')">
+        <img src="static/avatars/avatar2.png" onclick="selectAvatar('avatar2.png')">
+        <img src="static/avatars/avatar3.png" onclick="selectAvatar('avatar3.png')">
+        <img src="static/avatars/avatar4.png" onclick="selectAvatar('avatar4.png')">
+        <img src="static/avatars/avatar5.png" onclick="selectAvatar('avatar5.png')">
+      </div>
+    </div>
+  </aside>
 
     <!-- Zone centrale -->
     <section class="profile-main">
       <div class="topics-list">
         <h3>Mes topics</h3>
-        <div class="topic-card">Sujet 1</div>
-        <div class="topic-card">Sujet 2</div>
-        <div class="topic-card">Sujet 3</div>
+        <!-- Les sujets seront injectés ici -->
       </div>
+      
 
       <div class="last-reply">
         <h3>Dernière réponse</h3>

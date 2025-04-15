@@ -5,8 +5,10 @@ CREATE TABLE users (
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     session_token TEXT,
-    csrf_token TEXT
+    csrf_token TEXT,
+    avatar TEXT DEFAULT 'avatar1.png'
 );
+
 /*Table s'occupant des posts des utilisateurs*/
 CREATE TABLE posts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

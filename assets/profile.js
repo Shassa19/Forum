@@ -30,3 +30,53 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(err);
     });
 });
+
+function openAvatarPopup() {
+  document.getElementById("avatar-popup").classList.remove("hidden");
+}
+
+function selectAvatar(avatar) {
+  fetch("/update-avatar", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: `avatar=${avatar}`
+  }).then(() => {
+    document.getElementById("profile-avatar").src = `static/avatars/${avatar}`;
+    document.getElementById("avatar-popup").classList.add("hidden");
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("/user-info")
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("profile-username").textContent = data.username;
+      document.getElementById("profile-avatar").src = `static/avatars/${data.avatar}`;
+    });
+});
+
+function logout() {
+  const formData = new FormData();
+  formData.append("username", currentUser);
+
+  const csrf = document.cookie
+    .split("; ")
+    .find(row => row.startsWith("csrf_token="))
+    ?.split("=")
+    .slice(1)
+    .join("=") || "";
+
+  fetch("/logout", {
+    method: "POST",
+    body: formData,
+    headers: { "X-CSRF-Token": csrf }
+  })
+  .then(res => {
+    if (res.ok) {
+      alert("Déconnexion réussie !");
+      window.location.href = "/index";
+    } else {
+      alert("Erreur lors de la déconnexion.");
+    }
+  });
+}

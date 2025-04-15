@@ -225,12 +225,13 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Post créé avec succès !")
 }
 
+// Structure Post pour le JSON
 type Post struct {
 	ID       int    `json:"id"`
 	Username string `json:"username"`
 	Title    string `json:"title"`
 	Content  string `json:"content"`
-	Date     string `json:"created_at"`
+	Date     string `json:"date"`
 }
 
 // Fonction pour récupérer tous les posts sur  la page index
@@ -248,12 +249,18 @@ func getPosts(w http.ResponseWriter, r *http.Request) {
 	defer rows.Close()
 
 	var posts []Post
+
 	for rows.Next() {
 		var p Post
-		if err := rows.Scan(&p.ID, &p.Username, &p.Title, &p.Content, &p.Date); err != nil {
+		var rawDate time.Time
+
+		err := rows.Scan(&p.ID, &p.Username, &p.Title, &p.Content, &rawDate)
+		if err != nil {
 			http.Error(w, "Erreur lors du scan", http.StatusInternalServerError)
 			return
 		}
+
+		p.Date = rawDate.Format(time.RFC3339) // Renvoie : 2024-04-15T13:45:00Z
 		posts = append(posts, p)
 	}
 
@@ -270,17 +277,21 @@ func getPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var p Post
+	var rawDate time.Time
+
 	err := db.QueryRow(`
 		SELECT posts.id, users.username, posts.title, posts.content, posts.created_at
 		FROM posts
 		JOIN users ON posts.user_id = users.id
 		WHERE posts.id = ?
-	`, id).Scan(&p.ID, &p.Username, &p.Title, &p.Content, &p.Date)
+	`, id).Scan(&p.ID, &p.Username, &p.Title, &p.Content, &rawDate)
 
 	if err != nil {
 		http.Error(w, "Post introuvable", http.StatusNotFound)
 		return
 	}
+
+	p.Date = rawDate.Format(time.RFC3339)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(p)
@@ -352,6 +363,63 @@ func getUserPosts(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(posts)
 }
 
+func updateAvatar(w http.ResponseWriter, r *http.Request) {
+	if err := Authorize(r); err != nil {
+		http.Error(w, "Non autorisé", http.StatusUnauthorized)
+		return
+	}
+
+	sessionCookie, err := r.Cookie("session_token")
+	if err != nil {
+		http.Error(w, "Session manquante", http.StatusUnauthorized)
+		return
+	}
+
+	var username string
+	err = db.QueryRow("SELECT username FROM users WHERE session_token = ?", sessionCookie.Value).Scan(&username)
+	if err != nil {
+		http.Error(w, "Utilisateur introuvable", http.StatusUnauthorized)
+		return
+	}
+
+	avatar := r.FormValue("avatar")
+	if avatar == "" {
+		http.Error(w, "Aucun avatar fourni", http.StatusBadRequest)
+		return
+	}
+
+	_, err = db.Exec("UPDATE users SET avatar = ? WHERE username = ?", avatar, username)
+	if err != nil {
+		http.Error(w, "Erreur BDD", http.StatusInternalServerError)
+		return
+	}
+
+	w.Write([]byte("Avatar mis à jour"))
+}
+
+func getUserAvatar(w http.ResponseWriter, r *http.Request) {
+	sessionCookie, err := r.Cookie("session_token")
+	if err != nil || sessionCookie.Value == "" {
+		http.Error(w, "Non connecté", http.StatusUnauthorized)
+		return
+	}
+
+	var username, avatar string
+	err = db.QueryRow("SELECT username, avatar FROM users WHERE session_token = ?", sessionCookie.Value).Scan(&username, &avatar)
+	if err != nil {
+		http.Error(w, "Utilisateur introuvable", http.StatusNotFound)
+		return
+	}
+
+	user := map[string]string{
+		"username": username,
+		"avatar":   avatar,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(user)
+}
+
 func main() {
 	InitDB("../forum.db") // Connexion SQLite
 
@@ -367,6 +435,8 @@ func main() {
 	http.HandleFunc("/posts", getPosts)
 	http.HandleFunc("/getPost", getPost)
 	http.HandleFunc("/userPosts", getUserPosts)
+	http.HandleFunc("/update-avatar", updateAvatar)
+	http.HandleFunc("/user-info", getUserAvatar)
 
 	http.HandleFunc("/auth", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "../auth.html")
