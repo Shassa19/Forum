@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 )
@@ -420,6 +421,102 @@ func getUserAvatar(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(user)
 }
 
+// Fonction pour gérer les commentaires sur les posts
+
+type Comment struct {
+	ID      int    `json:"id,omitempty"`
+	PostID  int    `json:"post_id,omitempty"`
+	User    string `json:"username"`
+	Content string `json:"content"`
+	Date    string `json:"date,omitempty"`
+}
+
+// Handler pour ajouter un commentaire
+func addComment(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
+		return
+	}
+
+	if err := Authorize(r); err != nil {
+		log.Println("Erreur CSRF:", err)
+		http.Error(w, "Non autorisé", http.StatusUnauthorized)
+		return
+	}
+
+	postID := r.FormValue("post_id")
+	content := r.FormValue("content")
+
+	// Récupérer l'utilisateur connecté via le token
+	session, err := r.Cookie("session_token")
+	if err != nil {
+		log.Println("Erreur CSRF:", err)
+
+		http.Error(w, "Session manquante", http.StatusUnauthorized)
+		return
+	}
+
+	var userID int
+	err = db.QueryRow("SELECT id FROM users WHERE session_token = ?", session.Value).Scan(&userID)
+	if err != nil {
+		log.Println("Erreur CSRF:", err)
+
+		http.Error(w, "Utilisateur introuvable", http.StatusUnauthorized)
+		return
+	}
+
+	_, err = db.Exec("INSERT INTO comments (post_id, user_id, content) VALUES (?, ?, ?)", postID, userID, content)
+	if err != nil {
+		log.Println("Erreur CSRF:", err)
+
+		http.Error(w, "Erreur lors de l’ajout du commentaire", http.StatusInternalServerError)
+		return
+	}
+
+	log.Println("username reçu dans le POST:", r.FormValue("username"))
+	log.Println("csrf reçu dans le header:", r.Header.Get("X-CSRF-Token"))
+
+	w.WriteHeader(http.StatusCreated)
+}
+
+// Handler pour récupérer les commentaires d'un post
+func getComments(w http.ResponseWriter, r *http.Request) {
+	postID := r.URL.Query().Get("id")
+	if postID == "" {
+		http.Error(w, "ID du post manquant", http.StatusBadRequest)
+		return
+	}
+
+	rows, err := db.Query(`
+		SELECT users.username, comments.content
+		FROM comments
+		JOIN users ON comments.user_id = users.id
+		WHERE comments.post_id = ?
+		ORDER BY comments.created_at ASC
+	`, postID)
+	if err != nil {
+		http.Error(w, "Erreur lors de la récupération", http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var comments []map[string]string
+	for rows.Next() {
+		var username, content string
+		if err := rows.Scan(&username, &content); err != nil {
+			http.Error(w, "Erreur lors du scan", http.StatusInternalServerError)
+			return
+		}
+		comments = append(comments, map[string]string{
+			"username": username,
+			"content":  content,
+		})
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(comments)
+}
+
 func main() {
 	InitDB("../forum.db") // Connexion SQLite
 
@@ -437,6 +534,8 @@ func main() {
 	http.HandleFunc("/userPosts", getUserPosts)
 	http.HandleFunc("/update-avatar", updateAvatar)
 	http.HandleFunc("/user-info", getUserAvatar)
+	http.HandleFunc("/add-comment", addComment)
+	http.HandleFunc("/comments", getComments)
 
 	http.HandleFunc("/auth", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "../auth.html")
