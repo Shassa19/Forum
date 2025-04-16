@@ -20,7 +20,6 @@ func Authorize(r *http.Request) error {
 		log.Println("Username vide")
 		return AuthError
 	}
-	log.Println("USERNAME AUTH:", username)
 
 	// Session
 	sessionCookie, err := r.Cookie("session_token")
@@ -28,7 +27,6 @@ func Authorize(r *http.Request) error {
 		log.Println("Cookie de session manquant ou vide")
 		return AuthError
 	}
-	log.Println("SESSION COOKIE:", sessionCookie.Value)
 
 	// CSRF
 	csrfHeader := r.Header.Get("X-CSRF-Token")
@@ -36,7 +34,6 @@ func Authorize(r *http.Request) error {
 		log.Println("CSRF token manquant dans le header")
 		return AuthError
 	}
-	log.Println("CSRF HEADER:", csrfHeader)
 
 	// Vérifie dans la base
 	var storedSession, storedCSRF string
@@ -46,7 +43,6 @@ func Authorize(r *http.Request) error {
 		log.Println("Erreur SQL lors de la récupération des tokens:", err)
 		return AuthError
 	}
-	log.Println("STORED TOKENS:", storedSession, storedCSRF)
 
 	if storedSession != sessionCookie.Value || storedCSRF != csrfHeader {
 		log.Println("Tokens non correspondants")

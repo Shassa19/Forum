@@ -1,115 +1,160 @@
-:root {
-    --primary-color: #c5c8fc;
-    --background: #f5f5f5;
-    --card-bg: #ffffff;
-    --border-color: #ccc;
-    --text-color: #333;
-    --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    --radius: 8px;
-    --transition: 0.3s ease;
-    --font: 'Segoe UI', sans-serif;
-  }
-  
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: var(--font);
-  }
-  
-  body {
-    background: var(--background);
-    color: var(--text-color);
-    overflow-x: hidden;
-  }
-
-  a {
-    text-decoration: none;
-    color: inherit;
-  }  
-  
-  /*PopUp inscription*/
-  #message {
-    background-color: #d4edda;
-    color: #155724;
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    border-radius: 5px;
-  }
-  
-  .hidden {
-    display: none !important;
-  }
-  
-  /* HEADER */
-  header {
-    background-color: var(--primary-color);
-    padding: 3rem;
-    text-align: center;
-    position: relative;
-  }
-  
-  .top-bar {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
-  
-  .top-bar button {
-    margin-left: 10px;
-    padding: 5px 12px;
-    border: none;
-    border-radius: var(--radius);
-    background-color: white;
-    color: var(--text-color);
-    cursor: pointer;
-    transition: var(--transition);
-  }
-  
-  .top-bar button:hover {
-    background-color: #eee;
-  }
-  
-  /* NAVIGATION */
-  .main-nav {
-    display: flex;
-    justify-content: space-around;
-    background-color: white;
-    border-bottom: 1px solid var(--border-color);
-    padding: 0.5rem 0;
-  }
-  
-  .main-nav button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
-    transition: var(--transition);
-  }
-  
-  .main-nav button:hover {
-    background-color: #f0f0f0;
-    border-radius: var(--radius);
-  }
-  
-  /* CONTENU PRINCIPAL */
-  .forum-container {
-    display: flex;
-    padding: 1rem;
-  }
-  
-  /* FILTRES */
-  
-  /* ZONE CENTRALE */
-.forum-content {
-  flex: 1;
-  overflow-x: hidden; /* Empêche le scroll horizontal */
+/* === POLICES PERSONNALISÉES === */
+@font-face {
+  font-family: 'Jaro';
+  src: url('fonts/Jaro-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
-/* Barre de recherche */
+@font-face {
+  font-family: 'MontSerratAlternates';
+  src: url('fonts/MontserratAlternates-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'UNCAGE-Regular';
+  src: url('fonts/UNCAGE-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --primary-color: #1A322F;
+  --accent-color: #927E63;
+  --background: #DED7CF;
+  --card-bg: #ffffff;
+  --border-color: #ccc;
+  --text-color: #2B2621;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --radius: 8px;
+  --transition: 0.3s ease;
+  --font: 'MontSerratAlternates', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font);
+}
+
+body {
+  background: var(--background);
+  color: var(--text-color);
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+#message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* === HEADER === */
+header {
+  background-color: var(--primary-color);
+  padding: 3rem 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  font-family: 'Jaro', sans-serif;
+  color: white;
+  margin: 0;
+}
+
+.top-bar {
+  display: flex;
+  gap: 12px;
+}
+
+.top-bar button {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 25px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.top-bar button:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+/* === NAVIGATION === */
+.main-nav {
+  display: flex;
+  justify-content: space-around;
+  background-color: var(--accent-color);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.5rem 0;
+}
+
+.main-nav button {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+}
+
+.main-nav button::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  width: 80%;
+  height: 2px;
+  background-color: white;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+  transform-origin: center;
+}
+
+.main-nav button:hover::after {
+  transform: scaleX(1);
+}
+
+.main-nav button:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* === CONTENU PRINCIPAL === */
+.forum-container {
+  display: flex;
+  padding: 1rem;
+}
+
+.forum-content {
+  flex: 1;
+  overflow-x: hidden;
+}
+
 .search-bar input {
   width: 100%;
   padding: 10px;
@@ -118,7 +163,6 @@
   margin-bottom: 1rem;
 }
 
-/* Liste des sujets */
 .subject-list {
   display: flex;
   flex-direction: column;
@@ -129,7 +173,6 @@
   padding-right: 10px;
 }
 
-/* Carte d’un sujet */
 .subject-card {
   background-color: var(--card-bg);
   padding: 1rem;
@@ -143,12 +186,12 @@
   box-sizing: border-box;
 }
 
-/* Titre du sujet */
 .subject-card h3 {
   font-size: 1.1rem;
   font-weight: bold;
   margin-bottom: 5px;
-
+  font-family: 'UNCAGE-Regular', sans-serif;
+  color: var(--text-color);
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
@@ -157,11 +200,10 @@
   word-break: break-word;
 }
 
-/* Contenu du sujet */
 .subject-card p {
   font-size: 0.9rem;
   color: #666;
-
+  font-family: 'MontSerratAlternates', sans-serif;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -170,12 +212,10 @@
   word-break: break-word;
 }
 
-/* Métadonnées comme l’auteur et la date */
 .subject-card span {
   font-size: 0.8rem;
   color: #888;
   margin-top: 8px;
-
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -183,117 +223,168 @@
   display: block;
 }
 
-  
-  /* FOOTER */
-  footer {
-    border-top: 1px solid var(--border-color);
-    padding: 1.5rem 0.5rem;
-    background-color: #f7f7f7;
-    text-align: center;
-    margin-top: 2vh;
-  }
-  
-  footer h2 {
-    font-size: 1rem;
-    margin-bottom: 1rem;
-    color: #333;
-  }
-  
-  .footer-columns {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    text-align: left;
-    font-size: 0.8rem;
-    color: #555;
-  }
-  
-  .footer-columns h4 {
-    font-size: 0.95rem;
-    margin-bottom: 0.3rem;
-    color: #222;
-  }
-  
-  .footer-columns p {
-    margin: 2px 0;
-    line-height: 1.3;
-  }  
-  
-  /* Popup Post */
-  #popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100%;
-    background: rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .popup-box {
-    background: white;
-    padding: 30px;
-    border-radius: 15px;
-    width: 500px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-  }
-  
-  .popup-header {
-    margin-bottom: 20px;
-    font-size: 1.2em;
-    font-weight: bold;
-  }
-  
-  .popup-box input,
-  .popup-box textarea {
-    width: 100%;
-    margin-bottom: 15px;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #aaa;
-    font-size: 1rem;
-  }
-  
-  .popup-box textarea {
-    height: 150px;
-    resize: vertical;
-  }
-  
-  .popup-actions {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .popup-actions button {
-    padding: 10px 20px;
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  #cancelBtn {
-    background-color: #e0e0e0;
-  }
+/* === SIDEBAR FILTRES === */
+.filters {
+  width: 160px;
+  background-color: var(--accent-color);
+  color: white;
+  padding: 1.5rem 1rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  height: calc(100vh - 180px);
+  display: flex;
+  flex-direction: column;
+  margin-right: 1.5rem;
+  position: sticky;
+  top: 140px;
+}
 
-  #cancelBtn:hover {
-    background-color: #d2d2d2;
-  }  
-  
-  .publish {
-    background-color: #b4b4f8;
-    color: white;
-  }
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
 
-  .publish:hover {
-    background-color: #a1a1f5;
-  }
-  
-  .hidden {
-    display: none !important;
-  }
-  
-  
+.filter-header h2 {
+  font-size: 1.2rem;
+  font-family: 'UNCAGE-Regular', sans-serif;
+}
+
+.filters ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.filters li {
+  margin-bottom: 0.8rem;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.arrow-box button,
+#toggleFilters {
+  background: white;
+  color: var(--accent-color);
+  border: none;
+  border-radius: 50%;
+  padding: 6px 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#toggleFilters:hover {
+  background-color: #f0f0f0;
+}
+
+/* === FOOTER === */
+footer {
+  border-top: 1px solid var(--border-color);
+  padding: 1.5rem 0.5rem;
+  background-color: var(--accent-color);
+  text-align: center;
+  color: white;
+  margin-top: 2vh;
+}
+
+footer h2 {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.footer-columns {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  text-align: left;
+  font-size: 0.8rem;
+}
+
+.footer-columns h4 {
+  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+}
+
+.footer-columns p {
+  margin: 2px 0;
+  line-height: 1.3;
+}
+
+/* === POPUP === */
+#popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-box {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  width: 500px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+.popup-header {
+  margin-bottom: 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.popup-box input,
+.popup-box textarea {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #aaa;
+  font-size: 1rem;
+  font-family: 'MontSerratAlternates', sans-serif;
+}
+
+.popup-box textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+.popup-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.popup-actions button {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-family: 'UNCAGE-Regular', sans-serif;
+}
+
+#cancelBtn {
+  background-color: #e0e0e0;
+}
+
+#cancelBtn:hover {
+  background-color: #d2d2d2;
+}
+
+.publish {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.publish:hover {
+  background-color: var(--primary-color);
+}

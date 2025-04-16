@@ -10,12 +10,12 @@
 
   <!-- Header principal -->
   <header>
+    <h1>Forum</h1>
     <div class="top-bar">
       <button id="btn-auth" onclick="window.location.href='/auth'">S'authentifier</button>
       <button id="btn-profile" class="hidden">Mon profil</button>
       <button id="btn-logout" class="hidden">Déconnexion</button>
     </div>    
-    <h1>Forum</h1>
   </header>
 
   <!-- Navigation -->
@@ -31,19 +31,19 @@
       
       <!-- Sidebar filtres -->
       <aside id="filters" class="filters closed">
-        <div class="arrow-box">
-          <button id="toggleFilters">☰</button>
-        </div>
-        <div class="filter-content">
+        <div class="filter-header">
           <h2>Filtres</h2>
-          <ul>
-            <li><input type="checkbox"></li>
-            <li><input type="checkbox"></li>
-            <li><input type="checkbox"></li>
-          </ul>
+          <div class="arrow-box">
+            <button id="toggleFilters">☰</button>
+          </div>
         </div>
-      </aside>      
-
+        <ul>
+          <li><input type="checkbox"></li>
+          <li><input type="checkbox"></li>
+          <li><input type="checkbox"></li>
+        </ul>
+      </aside>
+      
       <!-- Zone centrale -->
       <section class="forum-content">
         <div class="search-bar">

@@ -32,7 +32,7 @@
     </div>
     <button onclick="openAvatarPopup()">Changer d'avatar</button>
     <h2 id="profile-username">Pseudo</h2>
-    <p class="edit-profile">Modification de profil</p>
+    <p class="edit-profile" onclick="openEditPopup()">Modification de profil</p>
     <button onclick="logout()">Se déconnecter</button>
 
     <!-- Popup de sélection d'avatar -->
@@ -46,6 +46,24 @@
         <img src="static/avatars/avatar5.png" onclick="selectAvatar('avatar5.png')">
       </div>
     </div>
+
+        <!-- Popup de modification de profil -->
+    <div id="edit-popup" class="hidden">
+      <h3>Modifier mon profil</h3>
+      <form id="edit-form">
+        <label for="new-username">Nouveau pseudo :</label>
+        <input type="text" id="new-username" name="new-username" placeholder="Nouveau pseudo..." required>
+
+        <label for="new-password">Nouveau mot de passe :</label>
+        <input type="password" id="new-password" name="new-password" placeholder="Nouveau mot de passe..." required>
+
+        <div class="popup-actions">
+          <button type="button" onclick="closeEditPopup()">Annuler</button>
+          <button type="submit">Valider</button>
+        </div>
+      </form>
+    </div>
+
   </aside>
 
     <!-- Zone centrale -->

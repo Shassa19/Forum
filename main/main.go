@@ -450,7 +450,6 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 	// Récupérer l'utilisateur connecté via le token
 	session, err := r.Cookie("session_token")
 	if err != nil {
-		log.Println("Erreur CSRF:", err)
 
 		http.Error(w, "Session manquante", http.StatusUnauthorized)
 		return
@@ -459,7 +458,6 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 	var userID int
 	err = db.QueryRow("SELECT id FROM users WHERE session_token = ?", session.Value).Scan(&userID)
 	if err != nil {
-		log.Println("Erreur CSRF:", err)
 
 		http.Error(w, "Utilisateur introuvable", http.StatusUnauthorized)
 		return
@@ -467,14 +465,10 @@ func addComment(w http.ResponseWriter, r *http.Request) {
 
 	_, err = db.Exec("INSERT INTO comments (post_id, user_id, content) VALUES (?, ?, ?)", postID, userID, content)
 	if err != nil {
-		log.Println("Erreur CSRF:", err)
 
 		http.Error(w, "Erreur lors de l’ajout du commentaire", http.StatusInternalServerError)
 		return
 	}
-
-	log.Println("username reçu dans le POST:", r.FormValue("username"))
-	log.Println("csrf reçu dans le header:", r.Header.Get("X-CSRF-Token"))
 
 	w.WriteHeader(http.StatusCreated)
 }
@@ -517,6 +511,114 @@ func getComments(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(comments)
 }
 
+// Handler pour récupérer les 3 derniers commentaires sur SES posts
+func getLastComments(w http.ResponseWriter, r *http.Request) {
+	// Vérifie session + récupère username
+	sessionCookie, err := r.Cookie("session_token")
+	if err != nil || sessionCookie.Value == "" {
+		http.Error(w, "Non connecté", http.StatusUnauthorized)
+		return
+	}
+
+	var username string
+	err = db.QueryRow("SELECT username FROM users WHERE session_token = ?", sessionCookie.Value).Scan(&username)
+	if err != nil {
+		http.Error(w, "Utilisateur introuvable", http.StatusUnauthorized)
+		return
+	}
+
+	// Récupère les 3 derniers commentaires sur SES posts
+	rows, err := db.Query(`
+		SELECT comments.content, comments.created_at, u.username, comments.post_id
+		FROM comments
+		JOIN posts ON comments.post_id = posts.id
+		JOIN users u ON comments.user_id = u.id
+		WHERE posts.user_id = (SELECT id FROM users WHERE username = ?)
+		ORDER BY comments.created_at DESC
+		LIMIT 3
+	`, username)
+	if err != nil {
+		http.Error(w, "Erreur SQL", http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	var replies []map[string]string
+
+	for rows.Next() {
+		var content, date, author string
+		var postID int
+
+		if err := rows.Scan(&content, &date, &author, &postID); err != nil {
+			http.Error(w, "Erreur lecture", http.StatusInternalServerError)
+			return
+		}
+
+		replies = append(replies, map[string]string{
+			"author":  author,
+			"content": content,
+			"date":    date,
+			"post_id": fmt.Sprint(postID), // 🔁 Converti int → string
+		})
+	}
+
+	// 🔹 Important : header doit être défini **avant** d'écrire quoi que ce soit
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(replies)
+}
+
+func updateProfile(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Méthode non autorisée", http.StatusMethodNotAllowed)
+		return
+	}
+
+	if err := Authorize(r); err != nil {
+		http.Error(w, "Non autorisé", http.StatusUnauthorized)
+		return
+	}
+
+	if err := r.ParseMultipartForm(1024); err != nil {
+		http.Error(w, "Erreur de parsing", http.StatusBadRequest)
+		return
+	}
+
+	oldUsername := r.FormValue("username")
+	newUsername := r.FormValue("new_username")
+	newPassword := r.FormValue("new_password")
+
+	// Vérifie si l'utilisateur existe bien
+	var userID int
+	err := db.QueryRow("SELECT id FROM users WHERE username = ?", oldUsername).Scan(&userID)
+	if err != nil {
+		http.Error(w, "Utilisateur introuvable", http.StatusUnauthorized)
+		return
+	}
+
+	if newUsername == "" && newPassword == "" {
+		http.Error(w, "Aucune donnée à modifier", http.StatusBadRequest)
+		return
+	}
+
+	// Mise à jour selon les champs remplis
+	if newUsername != "" && newPassword != "" {
+		hashed, _ := hashPassword(newPassword)
+		_, err = db.Exec("UPDATE users SET username = ?, password = ? WHERE id = ?", newUsername, hashed, userID)
+	} else if newUsername != "" {
+		_, err = db.Exec("UPDATE users SET username = ? WHERE id = ?", newUsername, userID)
+	} else if newPassword != "" {
+		hashed, _ := hashPassword(newPassword)
+		_, err = db.Exec("UPDATE users SET password = ? WHERE id = ?", hashed, userID)
+	}
+
+	if err != nil {
+		http.Error(w, "Erreur lors de la mise à jour", http.StatusInternalServerError)
+		return
+	}
+
+	w.Write([]byte("Profil mis à jour avec succès !"))
+}
+
 func main() {
 	InitDB("../forum.db") // Connexion SQLite
 
@@ -536,6 +638,8 @@ func main() {
 	http.HandleFunc("/user-info", getUserAvatar)
 	http.HandleFunc("/add-comment", addComment)
 	http.HandleFunc("/comments", getComments)
+	http.HandleFunc("/last-comments", getLastComments)
+	http.HandleFunc("/update-profile", updateProfile)
 
 	http.HandleFunc("/auth", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "../auth.html")

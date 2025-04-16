@@ -1,9 +1,9 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #f5f5f5;
-  font-family: 'Segoe UI', sans-serif;
-  color: #333;
+  background-color: #DED7CF;
+  font-family: 'MontSerratAlternates', sans-serif;
+  color: #2B2621;
   overflow-x: hidden;
 }
 
@@ -13,7 +13,7 @@ a {
 }  
 
 header {
-  background-color: #c5c8fc;
+  background-color: #1A322F;
   padding: 3rem;
   text-align: center;
   position: relative;
@@ -31,7 +31,7 @@ header {
   border: none;
   border-radius: 8px;
   background-color: white;
-  color: #333;
+  color: #2B2621;
   cursor: pointer;
   transition: 0.3s ease;
 }
@@ -39,7 +39,7 @@ header {
 nav.main-nav {
   display: flex;
   justify-content: space-around;
-  background-color: white;
+  background-color: #927E63;
   border-bottom: 1px solid #ccc;
   padding: 0.5rem 0;
 }
@@ -51,6 +51,7 @@ nav.main-nav button {
   font-size: 1rem;
   padding: 0.5rem 1rem;
   transition: 0.3s ease;
+  color: white;
 }
 
 .profile-container {
@@ -61,13 +62,14 @@ nav.main-nav button {
 .sidebar {
   width: 250px;
   padding: 1rem;
-  background-color: #e0e0e0;
+  background-color: #927E63;
   border-radius: 10px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+  color: white;
 }
 
 .sidebar .avatar {
@@ -104,9 +106,8 @@ nav.main-nav button {
   border-radius: 10px;
   box-shadow: var(--shadow, 0 2px 8px rgba(0, 0, 0, 0.05));
   margin-bottom: 2rem;
-  
-  max-height: 450px; /* Limite la hauteur */
-  overflow-y: auto;  /* Scroll vertical si trop de posts */
+  max-height: 450px;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -124,22 +125,21 @@ nav.main-nav button {
   border-radius: 10px;
   padding: 1rem;
   margin-bottom: 1rem;
-  background-color: #f5f5f5;
+  background-color: #ffffff;
 }
 
-/* FOOTER */
 footer {
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid #ccc;
   padding: 1.5rem 0.5rem;
-  background-color: #f7f7f7;
+  background-color: #927E63;
   text-align: center;
   margin-top: 2vh;
+  color: white;
 }
 
 footer h2 {
   font-size: 1rem;
   margin-bottom: 1rem;
-  color: #333;
 }
 
 .footer-columns {
@@ -149,13 +149,12 @@ footer h2 {
   gap: 1.5rem;
   text-align: left;
   font-size: 0.8rem;
-  color: #555;
+  color: white;
 }
 
 .footer-columns h4 {
   font-size: 0.95rem;
   margin-bottom: 0.3rem;
-  color: #222;
 }
 
 .footer-columns p {
@@ -163,7 +162,6 @@ footer h2 {
   line-height: 1.3;
 }  
 
-/* Popup Post */
 #popup-overlay {
   position: fixed;
   top: 0;
@@ -227,19 +225,18 @@ footer h2 {
 }  
 
 .publish {
-  background-color: #b4b4f8;
+  background-color: #927E63;
   color: white;
 }
 
 .publish:hover {
-  background-color: #a1a1f5;
+  background-color: #1A322F;
 }
 
 .hidden {
   display: none !important;
 }
 
-/* Avatar Popup */
 #avatar-popup {
   position: fixed;
   top: 20%;
@@ -251,12 +248,14 @@ footer h2 {
   box-shadow: 0 0 15px rgba(0,0,0,0.2);
   z-index: 1000;
 }
+
 .avatar-options img {
   width: 60px;
   margin: 5px;
   cursor: pointer;
   border: 2px solid transparent;
 }
+
 .avatar-options img:hover {
   border-color: #aaa;
 }
@@ -277,3 +276,79 @@ footer h2 {
   border-radius: 50%;
 }
 
+#edit-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  z-index: 1001;
+}
+
+#edit-popup h3 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#edit-popup input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+#edit-popup .popup-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+#edit-popup .popup-actions button {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#edit-popup .cancel-btn {
+  background-color: #eee;
+  color: #444;
+}
+
+#edit-popup .cancel-btn:hover {
+  background-color: #ddd;
+}
+
+#edit-popup .save-btn {
+  background-color: #927E63;
+  color: white;
+}
+
+#edit-popup .save-btn:hover {
+  background-color: #1A322F;
+}
+
+#edit-popup.hidden {
+  display: none;
+}
+
+.edit-profile {
+  cursor: pointer;
+  color: #2B2621;
+  font-size: 0.95rem;
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  padding: 5px 10px;
+  background-color: #fff;
+  transition: 0.3s ease;
+}
+
+.edit-profile:hover {
+  background-color: #eee;
+}
