@@ -1,3 +1,26 @@
+/* === POLICES PERSONNALISÉES === */
+@font-face {
+  font-family: 'Jaro';
+  src: url('fonts/Jaro-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'MontSerratAlternates';
+  src: url('fonts/MontserratAlternates-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'UNCAGE-Regular';
+  src: url('fonts/UNCAGE-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* === STYLES GÉNÉRAUX === */
 body {
   margin: 0;
   padding: 0;
@@ -12,30 +35,53 @@ a {
   color: inherit;
 }  
 
+/* === HEADER === */
 header {
-  background-color: #1A322F;
-  padding: 3rem;
-  text-align: center;
+  background-image: url("img/banner.gif"); /* ou le chemin vers ton GIF */
+  background-size: cover;
+  background-position: center 75%;
+  background-repeat: no-repeat;
+  background-color: #1A322F; /* fallback si le GIF ne se charge pas */
   position: relative;
+  padding: 3rem 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header h1 {
+  font-size: 3.5rem;
+  font-family: 'Jaro', sans-serif;
+  color: white;
+  margin: 0;
+  text-align: left;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 .top-bar {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  display: flex;
+  align-items: center;
 }
 
 .top-bar button {
-  margin-left: 10px;
-  padding: 5px 12px;
+  font-family: 'MontSerratAlternates', sans-serif;
+  font-size: 0.95rem;
+  padding: 10px 18px;
   border: none;
-  border-radius: 8px;
-  background-color: white;
-  color: #2B2621;
+  border-radius: 25px;
+  background-color: rgba(255, 255, 255, 0.12);
+  color: white;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
+.top-bar button:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+/* === NAVIGATION === */
 nav.main-nav {
   display: flex;
   justify-content: space-around;
@@ -45,15 +91,40 @@ nav.main-nav {
 }
 
 nav.main-nav button {
-  background: none;
+  background: transparent;
   border: none;
-  cursor: pointer;
+  color: white;
   font-size: 1rem;
   padding: 0.5rem 1rem;
+  cursor: pointer;
   transition: 0.3s ease;
-  color: white;
+  position: relative;
+  font-family: 'MontSerratAlternates', sans-serif;
 }
 
+nav.main-nav button::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  width: 80%;
+  height: 2px;
+  background-color: white;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+  transform-origin: center;
+}
+
+nav.main-nav button:hover::after {
+  transform: scaleX(1);
+}
+
+nav.main-nav button:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* === CONTENU PRINCIPAL === */
 .profile-container {
   display: flex;
   padding: 1rem;
@@ -72,20 +143,22 @@ nav.main-nav button {
   color: white;
 }
 
-.sidebar .avatar {
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background-color: #ccc;
-  border: 1px solid #999;
+.sidebar button,
+.edit-profile {
+  padding: 8px 16px;
+  background-color: rgba(255,255,255,0.15);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  color: white;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-family: 'UNCAGE-Regular', sans-serif;
 }
 
-.sidebar button {
-  padding: 6px 16px;
-  background-color: white;
-  border: 1px solid #888;
-  border-radius: 4px;
-  cursor: pointer;
+.sidebar button:hover,
+.edit-profile:hover {
+  background-color: rgba(255,255,255,0.3);
+  transform: scale(1.05);
 }
 
 .profile-main {
@@ -98,13 +171,14 @@ nav.main-nav button {
 
 .profile-main h3 {
   margin-bottom: 0.5rem;
+  font-family: 'UNCAGE-Regular', sans-serif;
 }
 
 .topics-list {
   background-color: white;
   padding: 1rem;
   border-radius: 10px;
-  box-shadow: var(--shadow, 0 2px 8px rgba(0, 0, 0, 0.05));
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   margin-bottom: 2rem;
   max-height: 450px;
   overflow-y: auto;
@@ -126,8 +200,10 @@ nav.main-nav button {
   padding: 1rem;
   margin-bottom: 1rem;
   background-color: #ffffff;
+  font-family: 'MontSerratAlternates', sans-serif;
 }
 
+/* === FOOTER === */
 footer {
   border-top: 1px solid #ccc;
   padding: 1.5rem 0.5rem;
@@ -135,6 +211,7 @@ footer {
   text-align: center;
   margin-top: 2vh;
   color: white;
+  font-family: 'MontSerratAlternates', sans-serif;
 }
 
 footer h2 {
@@ -160,8 +237,9 @@ footer h2 {
 .footer-columns p {
   margin: 2px 0;
   line-height: 1.3;
-}  
+}
 
+/* === POPUP GÉNÉRALE === */
 #popup-overlay {
   position: fixed;
   top: 0;
@@ -187,6 +265,7 @@ footer h2 {
   margin-bottom: 20px;
   font-size: 1.2em;
   font-weight: bold;
+  font-family: 'MontSerratAlternates', sans-serif;
 }
 
 .popup-box input,
@@ -197,6 +276,7 @@ footer h2 {
   border-radius: 10px;
   border: 1px solid #aaa;
   font-size: 1rem;
+  font-family: 'MontSerratAlternates', sans-serif;
 }
 
 .popup-box textarea {
@@ -214,6 +294,7 @@ footer h2 {
   border-radius: 20px;
   border: none;
   cursor: pointer;
+  font-family: 'UNCAGE-Regular', sans-serif;
 }
 
 #cancelBtn {
@@ -233,33 +314,52 @@ footer h2 {
   background-color: #1A322F;
 }
 
-.hidden {
-  display: none !important;
-}
-
+/* === POPUP AVATAR === */
 #avatar-popup {
   position: fixed;
-  top: 20%;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  background: white;
-  padding: 1rem;
+  transform: translate(-50%, -50%);
+  background: #f0f0f0;
+  padding: 2rem;
   border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
-  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1002;
+  text-align: center;
+  width: 420px;
+  font-family: 'MontSerratAlternates', sans-serif;
+  color: #2B2621;
+  border: 3px solid #1A322F;
+}
+
+#avatar-popup h3 {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  font-family: 'UNCAGE-Regular', sans-serif;
+}
+
+.avatar-options {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .avatar-options img {
-  width: 60px;
-  margin: 5px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
   cursor: pointer;
-  border: 2px solid transparent;
+  border: 3px solid transparent;
+  transition: transform 0.2s ease, border-color 0.3s ease;
 }
 
 .avatar-options img:hover {
-  border-color: #aaa;
+  border-color: #927E63;
+  transform: scale(1.1);
 }
 
+/* === WRAPPER AVATAR ACTIF === */
 .avatar-wrapper {
   width: 120px;
   height: 120px;
@@ -276,79 +376,108 @@ footer h2 {
   border-radius: 50%;
 }
 
+/* === POPUP MODIFICATION PROFIL === */
 #edit-popup {
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: white;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  width: 400px;
-  z-index: 1001;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1002;
+  background-color: rgba(0, 0, 0, 0.5); /* fond semi-transparent */
 }
 
+#edit-popup .popup-content {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  width: 420px;
+  font-family: 'MontSerratAlternates', sans-serif;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+/* Titre */
 #edit-popup h3 {
-  margin-bottom: 20px;
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  font-family: 'UNCAGE-Regular', sans-serif;
   text-align: center;
 }
 
-#edit-popup input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 1rem;
-}
-
-#edit-popup .popup-actions {
+/* Formulaire */
+#edit-popup form {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 0.8rem;
 }
 
-#edit-popup .popup-actions button {
-  padding: 10px 20px;
-  border-radius: 20px;
-  border: none;
-  cursor: pointer;
+/* Labels */
+#edit-popup label {
+  font-family: 'UNCAGE-Regular', sans-serif;
+  font-size: 0.95rem;
   font-weight: bold;
 }
 
-#edit-popup .cancel-btn {
-  background-color: #eee;
+/* Champs */
+#edit-popup input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  font-family: 'MontSerratAlternates', sans-serif;
+}
+
+/* Boutons */
+.popup-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+.popup-actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  font-family: 'UNCAGE-Regular', sans-serif;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.popup-actions button:hover {
+  transform: scale(1.05);
+}
+
+.popup-actions button[type="button"] {
+  background-color: rgba(0, 0, 0, 0.05);
   color: #444;
 }
 
-#edit-popup .cancel-btn:hover {
-  background-color: #ddd;
+.popup-actions button[type="button"]:hover {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
-#edit-popup .save-btn {
-  background-color: #927E63;
+.popup-actions button[type="submit"] {
+  background-color: var(--accent-color);
   color: white;
 }
 
-#edit-popup .save-btn:hover {
-  background-color: #1A322F;
+.popup-actions button[type="submit"]:hover {
+  background-color: var(--primary-color);
 }
 
+/* Cacher */
 #edit-popup.hidden {
-  display: none;
+  display: none !important;
 }
 
-.edit-profile {
-  cursor: pointer;
-  color: #2B2621;
-  font-size: 0.95rem;
-  border: 1px solid #aaa;
-  border-radius: 8px;
-  padding: 5px 10px;
-  background-color: #fff;
-  transition: 0.3s ease;
-}
 
-.edit-profile:hover {
-  background-color: #eee;
+/* === CLASSE UTILITAIRE === */
+.hidden {
+  display: none !important;
 }

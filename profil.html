@@ -10,11 +10,11 @@
 
   <!-- Header principal -->
   <header>
+    <h1>Forum</h1>
     <div class="top-bar">
       <button onclick="window.location.href='/index'">← Retour</button>
     </div>
-    <h1>Forum</h1>
-  </header>
+  </header>  
 
   <!-- Navigation -->
   <nav class="main-nav">
@@ -48,21 +48,24 @@
     </div>
 
         <!-- Popup de modification de profil -->
-    <div id="edit-popup" class="hidden">
-      <h3>Modifier mon profil</h3>
-      <form id="edit-form">
-        <label for="new-username">Nouveau pseudo :</label>
-        <input type="text" id="new-username" name="new-username" placeholder="Nouveau pseudo..." required>
+<div id="edit-popup" class="hidden">
+  <div class="popup-content">
+    <h3>Modifier mon profil</h3>
+    <form id="edit-form">
+      <label for="new-username">Nouveau pseudo :</label>
+      <input type="text" id="new-username" name="new-username" placeholder="Nouveau pseudo..." required>
 
-        <label for="new-password">Nouveau mot de passe :</label>
-        <input type="password" id="new-password" name="new-password" placeholder="Nouveau mot de passe..." required>
+      <label for="new-password">Nouveau mot de passe :</label>
+      <input type="password" id="new-password" name="new-password" placeholder="Nouveau mot de passe..." required>
 
-        <div class="popup-actions">
-          <button type="button" onclick="closeEditPopup()">Annuler</button>
-          <button type="submit">Valider</button>
-        </div>
-      </form>
-    </div>
+      <div class="popup-actions">
+        <button type="button" onclick="closeEditPopup()">Annuler</button>
+        <button type="submit">Valider</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 
   </aside>
 

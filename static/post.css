@@ -114,15 +114,19 @@
 
 .comment-form button {
   align-self: flex-end;
-  padding: 0.5rem 1.2rem;
-  background: #c5c8fc;
+  padding: 10px 22px;
+  background-color: #927E63;
+  color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 25px;
+  font-family: 'UNCAGE-Regular', sans-serif;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .comment-form button:hover {
-  background: #a5a8dc;
+  background-color: #1A322F;
+  transform: scale(1.05);
 }
 
 /* Popup Post */
