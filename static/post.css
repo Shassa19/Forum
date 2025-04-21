@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'UNCAGE-Regular';
+  src: url('fonts/UNCAGE-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .post-container {
   padding: 2rem;
   max-width: 900px;
@@ -34,20 +41,30 @@
 }
 
 .post-title {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   margin: 1rem 0 0.5rem;
+  font-family: 'UNCAGE-Regular', sans-serif;
+  margin-top: 1.5rem;
 }
 
 .post-content {
   font-size: 0.95rem;
   color: #444;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem; /* Pour laisser de la place au bloc like */
+  position: relative;
+  padding-bottom: 1.5rem; /* espace visuel pour le bloc like */
 }
 
 .post-meta {
   font-size: 0.8rem;
   color: #999;
   margin-bottom: 1.5rem;
+}
+
+.post-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .post-title,
@@ -127,6 +144,36 @@
 .comment-form button:hover {
   background-color: #1A322F;
   transform: scale(1.05);
+}
+
+/* === BOUTONS LIKE / DISLIKE STYLÉS === */
+#btn-like,
+#btn-dislike {
+  border: none;
+  background-color: #f0f0f0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#btn-like:hover {
+  background-color: #d6f5d6;
+  transform: scale(1.05);
+}
+
+#btn-dislike:hover {
+  background-color: #f5d6d6;
+  transform: scale(1.05);
+}
+
+#like-count,
+#dislike-count {
+  font-weight: bold;
+  color: #444;
+  font-size: 16px;
 }
 
 /* Popup Post */

@@ -61,15 +61,23 @@ func createTables() {
 		FOREIGN KEY(user_id) REFERENCES users(id)
 	);
 
-	CREATE TABLE IF NOT EXISTS likes (
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		user_id INTEGER,
-		post_id INTEGER,
-		value INTEGER CHECK(value IN (1, -1)),
-		created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-		UNIQUE(user_id, post_id),
-		FOREIGN KEY(user_id) REFERENCES users(id),
-		FOREIGN KEY(post_id) REFERENCES posts(id)
+	 CREATE TABLE IF NOT EXISTS likes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        post_id INTEGER,
+        value INTEGER CHECK(value IN (1, -1)),
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE(user_id, post_id),
+        FOREIGN KEY(user_id) REFERENCES users(id),
+        FOREIGN KEY(post_id) REFERENCES posts(id)
+    );
+
+    CREATE TABLE IF NOT EXISTS dislikes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    post_id INTEGER,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id, post_id)
 	);
 
 	CREATE TABLE IF NOT EXISTS categories (

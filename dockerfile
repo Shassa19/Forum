@@ -1,17 +1,25 @@
-FROM golang:1.20-alpine AS builder 
+FROM golang:1.24.1-bookworm AS builder
+
+RUN apt-get update && apt-get install -y gcc libsqlite3-dev sqlite3
 
 WORKDIR /app
 
-COPY go.mod go.sum ./
-RUN go env -w GO111MODULE=on
-RUN go mod download
 COPY . .
-RUN go build -o forum .
+RUN go mod download
+RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o forum ./main
+RUN ls -l /app
 
-FROM alpine:latest
+FROM golang:1.24.1-bookworm
+WORKDIR /app
 
-WORKDIR /root/
+RUN apt-get update && apt-get install -y sqlite3 libsqlite3-0
 
 COPY --from=builder /app/forum .
+COPY --from=builder /app/main ./main
+COPY --from=builder /app/static ./static
 
-CMD ["./forum"]
+RUN chmod +x /app/forum
+
+EXPOSE 8080
+
+CMD [ "/app/forum" ]

@@ -233,6 +233,8 @@ type Post struct {
 	Title    string `json:"title"`
 	Content  string `json:"content"`
 	Date     string `json:"date"`
+	Likes    int    `json:"likes"`
+	Dislikes int    `json:"dislikes"`
 }
 
 // Fonction pour récupérer tous les posts sur  la page index
@@ -280,19 +282,30 @@ func getPost(w http.ResponseWriter, r *http.Request) {
 	var p Post
 	var rawDate time.Time
 
+	// Récupération du post avec l'auteur
 	err := db.QueryRow(`
 		SELECT posts.id, users.username, posts.title, posts.content, posts.created_at
 		FROM posts
 		JOIN users ON posts.user_id = users.id
 		WHERE posts.id = ?
 	`, id).Scan(&p.ID, &p.Username, &p.Title, &p.Content, &rawDate)
-
 	if err != nil {
 		http.Error(w, "Post introuvable", http.StatusNotFound)
 		return
 	}
-
 	p.Date = rawDate.Format(time.RFC3339)
+
+	// Récupération des likes
+	err = db.QueryRow("SELECT COUNT(*) FROM likes WHERE post_id = ?", id).Scan(&p.Likes)
+	if err != nil {
+		p.Likes = 0
+	}
+
+	// Récupération des dislikes
+	err = db.QueryRow("SELECT COUNT(*) FROM dislikes WHERE post_id = ?", id).Scan(&p.Dislikes)
+	if err != nil {
+		p.Dislikes = 0
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(p)
@@ -640,6 +653,7 @@ func main() {
 	http.HandleFunc("/comments", getComments)
 	http.HandleFunc("/last-comments", getLastComments)
 	http.HandleFunc("/update-profile", updateProfile)
+	http.HandleFunc("/api/like", handlerLikeDislike)
 
 	http.HandleFunc("/auth", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "../auth.html")
